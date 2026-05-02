@@ -1,0 +1,93 @@
+<Window x:Class="PCBInspector.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PCB 불량 검출 시스템" Height="700" Width="1000"
+        Background="#1E1E2E">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="320"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- 타이틀 -->
+        <TextBlock Grid.ColumnSpan="2" Text="PCB 불량 검출 시스템"
+                   Foreground="White" FontSize="20" FontWeight="Bold"
+                   Margin="0,0,0,16"/>
+
+        <!-- 이미지 + 바운딩박스 오버레이 -->
+        <Border Grid.Row="1" Grid.Column="0" Background="#2A2A3E"
+                CornerRadius="8" Margin="0,0,12,0">
+            <Grid>
+                <Image x:Name="PreviewImage" Stretch="Uniform" Margin="8"/>
+                <Canvas x:Name="OverlayCanvas" 
+                        Width="{Binding ActualWidth, ElementName=PreviewImage}"
+                        Height="{Binding ActualHeight, ElementName=PreviewImage}"/>
+            </Grid>
+        </Border>
+
+        <!-- 오른쪽 패널 -->
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <!-- 상태 표시 -->
+            <Border x:Name="StatusBorder" Background="#2A2A3E" 
+                    CornerRadius="8" Padding="16" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Text="검사 결과" Foreground="#888" FontSize="12" Margin="0,0,0,8"/>
+                    <TextBlock x:Name="StatusText" Text="이미지를 선택하세요"
+                               Foreground="White" FontSize="16" FontWeight="Bold"
+                               TextWrapping="Wrap"/>
+                    <TextBlock x:Name="CountText" Foreground="#888" 
+                               FontSize="13" Margin="0,4,0,0"/>
+                </StackPanel>
+            </Border>
+
+            <!-- 검출 목록 -->
+            <TextBlock Text="검출된 불량" Foreground="#888" FontSize="12" Margin="0,0,0,8"/>
+            <ListView x:Name="DetectionList" Background="#2A2A3E"
+                      BorderThickness="0" Foreground="White"
+                      MaxHeight="300">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="#3A3A5E" CornerRadius="6" 
+                                Padding="10,8" Margin="0,2">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Text="{Binding ClassName}" 
+                                           FontWeight="SemiBold" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" 
+                                           Text="{Binding Confidence, StringFormat={}{0:P1}}"
+                                           Foreground="#A0A0FF" FontSize="12"/>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackPanel>
+
+        <!-- 하단 버튼 -->
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" 
+                    Margin="0,12,0,0">
+            <Button x:Name="LoadButton" Content="이미지 불러오기"
+                    Click="LoadButton_Click"
+                    Background="#5B5BF6" Foreground="White"
+                    Padding="20,10" BorderThickness="0"
+                    FontSize="14" Cursor="Hand" Margin="0,0,12,0"/>
+            <Button x:Name="InspectButton" Content="검사 시작"
+                    Click="InspectButton_Click"
+                    Background="#2ECC71" Foreground="White"
+                    Padding="20,10" BorderThickness="0"
+                    FontSize="14" Cursor="Hand" IsEnabled="False"/>
+            <TextBlock x:Name="LoadingText" Text="분석 중..." 
+                       Foreground="#A0A0FF" VerticalAlignment="Center"
+                       Margin="16,0,0,0" Visibility="Collapsed"/>
+        </StackPanel>
+    </Grid>
+</Window>

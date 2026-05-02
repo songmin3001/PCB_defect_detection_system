@@ -1,0 +1,8 @@
+PCB-Inspector/
+├── MainWindow.xaml
+├── MainWindow.xaml.cs
+├── Models/
+│   └── DetectionResult.cs
+└── Services/
+    └── ApiService.cs
+    
